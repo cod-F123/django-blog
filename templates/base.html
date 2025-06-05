@@ -1,4 +1,4 @@
- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +18,11 @@
             <ul class="list-item sm-hidden">
                 <li><a href="{% url 'home' %}" class="item">Home</a></li>
                 <li><a href="#" class="item">Articles</a></li>
-                <li><a href="#" class="item success">Login</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}" class="item danger">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}" class="item success">Login</a></li>
+                {% endif %}
                 <li><form action=""><input type="text"><button>search</button></form></li>
             </ul>
         </div>
@@ -32,6 +36,16 @@
                 <li><form action=""><input type="text"><button>search</button></form></li>
         </ul>
     </div>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+                <button class="close-message-btn" onclick="this.parentElement.style.display='none'" title="Close">&times;</button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
     {% block content %}
         
     {% endblock content %}
@@ -54,6 +68,10 @@
             $(this).removeClass("close");
             $(this).addClass("open");
         })
+        // Optional: jQuery close for fade out effect
+        $(document).on('click', '.close-message-btn', function(){
+            $(this).parent('.message').fadeOut(200);
+        });
     </script>
 </body>
 </html>
