@@ -1,0 +1,59 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+   
+    <title>Django Blog</title>
+    
+</head>
+<body>  
+    
+    <nav>
+        <div class="nv-sm">
+            <div class="menu-btn open"></div>
+            <ul class="list-item sm-hidden">
+                <li><a href="{% url 'home' %}" class="item">Home</a></li>
+                <li><a href="#" class="item">Articles</a></li>
+                <li><a href="#" class="item success">Login</a></li>
+                <li><form action=""><input type="text"><button>search</button></form></li>
+            </ul>
+        </div>
+        <div class="logo">DjBlog</div>
+    </nav>
+    <div class="nav-sm">
+        <ul class="list-item">
+                <li><a href="#" class="item">Home</a></li>
+                <li><a href="#" class="item">Blogs</a></li>
+                <li><a href="#" class="item success">Login</a></li>
+                <li><form action=""><input type="text"><button>search</button></form></li>
+        </ul>
+    </div>
+    {% block content %}
+        
+    {% endblock content %}
+    
+    <footer>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, commodi inventore in minima, id alias impedit voluptas earum eos magnam minus veritatis doloribus sequi, aspernatur adipisci corrupti dicta exercitationem magni?
+    </footer>
+
+    
+    <script>
+        $(document).on("click",".open",function(e){
+            e.preventDefault();
+            $(".nav-sm").addClass("h-60");
+            $(this).addClass("close");
+            $(this).removeClass("open");
+        })
+        $(document).on("click",".close",function(e){
+            e.preventDefault();
+            $(".nav-sm").removeClass("h-60");
+            $(this).removeClass("close");
+            $(this).addClass("open");
+        })
+    </script>
+</body>
+</html>

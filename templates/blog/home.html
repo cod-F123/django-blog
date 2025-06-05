@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="text">
+            <span class="addtext"></span><span> ...|</span>
+        </div>
+    </div>
+
+    <div class="container f-column p-20">
+        <div class="title"><a href="#" class="a-b">New Articles <span class="a-t"></span></a></div>
+        <div class="container f-row">
+            {% for article in articles %}
+                <div class="cart">
+                    <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                    <div class="des-cart">
+                        <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                        <p class="mini"> {{article.mini_description}}</p>
+                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            
+        </div>
+        <div class="title"><a href="#" class="a-b">Pupolear<span class="a-t"></span></a></div>
+        <div class="container f-row">
+            {% for article in articles %}
+                <div class="cart">
+                    <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                    <div class="des-cart">
+                        <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                        <p class="mini"> {{article.mini_description}}</p>
+                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        let textA = document.getElementsByClassName("addtext")[0];
+        let text = "Write your Article";
+        let delay = 0;
+        for (let i of text){
+            setTimeout(()=>{
+                textA.innerHTML += i;
+            },delay+=130)
+        }
+
+    </script>
+{% endblock content %}
+    

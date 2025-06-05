@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container m-20 row j-center" style="margin-top:20px">
+        <div id="info" class="info">
+            <div class="prag-hub hidden-para">
+                <div class="btn-hid-para" >Paragraphs :</div>
+                <ul class="prag-list">
+                    {% for p in article.paragraph_set.all %}
+                        <li><a href="#para-{{article.slug}}{{p.id}}"># {{p.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="comment-title">Comments :</div>
+            <div class="comment-list">
+                
+                <div class="co-hub">
+                    {% for comment in article.comment_set.all %}
+                    <div class="comment-cart">
+                        <div class="comment-info">
+                            <a href="#"><img src="{% static 'images/user.png' %}" alt="" class="user-image">
+                            {{comment.user.username}}</a>
+                        </div>
+                        <div class="comment-body">
+                            {{comment.content}}
+                        </div>
+                        <div class="date-comment">
+                            {% if comment.updated %}
+                                <span>updated</span><span>{{comment.date_updated}}</span>
+                            {% else %}  
+                                <span>{{comment.date_created}}</span>
+                            {% endif %}
+                        </div>
+                    </div> 
+                    {% endfor %}                                      
+                                  
+
+                </div>
+            </div>
+        </div>
+        
+            <div class="detail-article">
+                <div class="head-article">
+                    <div class="author-info">
+                        <a href="#"><img src="{% static 'images/user.png' %}" alt="" class="user-image">
+                        USERNAME</a>
+                        <button class="follow-btn">Follow</button>
+                        <button class="unfollow-btn hidden">Unfollow</button>
+                    </div>
+                    
+                </div>
+                <img src="{{article.image.url}}" alt="" class="img-detail">
+                <p class="article-title">{{article.title}}</p>
+                {% if article.introduction %}
+                    <p class="mini-des-art">{{article.introduction}}</p>
+                {% endif %}
+                <div class="container-80">
+                    {% for paragraph in article.paragraph_set.all %}
+                    <div class="paragraph">
+                        {% if paragraph.image %}
+                            <img src="{{paragraph.image.url}}" alt="">
+                        {% endif %}
+                        <div class="para-t" id="para-{{article.slug}}{{paragraph.id}}"><div> </div> {{paragraph.title}}</div>
+                        <p class="para-body">{{paragraph.content}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        
+        <div class="com"><a href="#info">comments</a></div>
+        <button class="btn-para">Paragraphs</button>
+    </div>
+
+    <script>
+        $(document).on("click",".btn-para",function(e){
+            $(".prag-hub").removeClass("hidden-para");
+        })
+        $(document).on("click",".btn-hid-para",function(e){
+            $(".prag-hub").addClass("hidden-para");
+        })
+    </script>
+
+{% endblock content %}
+    
