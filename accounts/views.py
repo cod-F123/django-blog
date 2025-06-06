@@ -2,8 +2,9 @@ from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate , login , logout
 from .froms import RegisterUser
 from django.contrib import messages
-from .models import Profile
+from .models import Profile , Following
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -60,3 +61,34 @@ def profile_page(request,username):
     
     messages.warning(request,"User not founded!")
     return redirect("home")
+
+def following_user(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST' and request.POST.get("action") == 'post':
+            followed_user = User.objects.filter(username = request.POST.get("uname")).first()
+            
+            if followed_user is not None:
+                followed_last = Following.objects.filter(followd__username = followed_user.username , follower__username = request.user.username).first() 
+
+                if followed_last is None:
+                    new_followed = Following.objects.create(followd = followed_user,follower = request.user)
+                    
+                    return JsonResponse({"message":"successful"})
+                
+    return JsonResponse({"message":"error"})
+
+def unfollowing_user(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST' and request.POST.get("action") == 'post':
+            followed_user = User.objects.filter(username = request.POST.get("uname")).first()
+            
+            if followed_user is not None:
+                followed_last = Following.objects.filter(followd__username = followed_user.username , follower__username = request.user.username).first() 
+
+                if followed_last is not None:
+                    followed_last.delete()
+                    
+                    return JsonResponse({"message":"successful"})
+                
+    return JsonResponse({"message":"error"})
+            

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load my_tags %}
 
 {% block content %}
     <div class="container m-20 row j-center" style="margin-top:20px">
@@ -46,9 +47,14 @@
                         <a href="{% url 'profile_user' article.author.username %}"><img src="{{article.author.profile.image.url}}" alt="" class="user-image">
                         {{article.author}}</a>
                         
-                        <button class="follow-btn">Follow</button>
-                        <button class="unfollow-btn hidden">Unfollow</button>
+                        {% if article.author.username|is_followed:user.username %}
                         
+                            <button class="unfollow-btn btn-lg" data-index="{{article.author.username}}">Unfollow</button>
+                            <button class="follow-btn btn-lg hidden" data-index="{{article.author.username}}">Follow</button>
+                        {% else %}
+                            <button class="follow-btn btn-lg" data-index="{{article.author.username}}">Follow</button>
+                            <button class="unfollow-btn btn-lg hidden" data-index="{{article.author.username}}">Unfollow</button>
+                        {% endif %}
                     </div>
                     
                 </div>
@@ -82,6 +88,52 @@
             $(".prag-hub").addClass("hidden-para");
         })
     </script>
+<script>
+    $(document).on("click",".follow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'following_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".unfollow-btn").removeClass("hidden");
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    });
+    $(document).on("click",".unfollow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'unfollowing_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".follow-btn").removeClass("hidden");
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    })
+</script>
 
 {% endblock content %}
     
