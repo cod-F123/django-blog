@@ -2,6 +2,8 @@ from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate , login , logout
 from .froms import RegisterUser
 from django.contrib import messages
+from .models import Profile
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -35,7 +37,7 @@ def register_user(request):
             
             if form.is_valid():
                 form.save()
-                user = authenticate(request, username=form.cleaned_data.get("username"), password=form.cleaned_data.get("password"))
+                user = authenticate(request,username=form.cleaned_data.get("username"), password=form.cleaned_data.get("password2"))
                 login(request, user)
                 messages.success(request, "Registration successful")
 
@@ -46,4 +48,15 @@ def register_user(request):
                 return redirect("login")
 
     messages.error(request,"Access Denied")
+    return redirect("home")
+
+
+def profile_page(request,username):
+    user = User.objects.filter(username = username).first()
+    
+    if user is not None:
+        
+        return render(request,"accounts/account.html",{"user_":user})
+    
+    messages.warning(request,"User not founded!")
     return redirect("home")

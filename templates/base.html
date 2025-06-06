@@ -17,9 +17,10 @@
             <div class="menu-btn open"></div>
             <ul class="list-item sm-hidden">
                 <li><a href="{% url 'home' %}" class="item">Home</a></li>
-                <li><a href="#" class="item">Articles</a></li>
+                <li><a href="#" class="item">Blogs</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}" class="item danger">Logout</a></li>
+                    <li><a href="{% url 'profile_user' user.username %}" class="item">Profile</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}" class="item success">Login</a></li>
                 {% endif %}
@@ -30,11 +31,18 @@
     </nav>
     <div class="nav-sm">
         <ul class="list-item">
-                <li><a href="#" class="item">Home</a></li>
+                <li><a href="{% url 'home' %}" class="item">Home</a></li>
                 <li><a href="#" class="item">Blogs</a></li>
-                <li><a href="#" class="item success">Login</a></li>
-                <li><form action=""><input type="text"><button>search</button></form></li>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'profile_user' user.username %}" class="item">Profile</a></li>
+                    <li><a href="{% url 'logout' %}" class="item danger">Logout</a></li>
+                {% else %}
+                    <li><a href="#" class="item success">Login</a></li>
+                {% endif %}
         </ul>
+        <div class="list-item" style="margin-top: 4px;">
+            <form action=""><input type="text"><button>search</button></form>
+        </div>
     </div>
     {% if messages %}
     <div class="messages">

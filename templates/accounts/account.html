@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container j-center">
+    <div class="container-80 j-center">
+        <div class="countainer">
+            <div class="profile-hub">
+                <div>
+                    <img src="{{user_.profile.image.url}}" alt="" class="img-profile-user">
+                    <span class="username-profile">{{user_.username}}</span>
+                </div>
+                <div class="ffuser">Followed <span>{{user_.followed.all.count}}</span></div>
+                <div class="ffuser">Follower <span>{{user_.follower.all.count}}</span></div>
+                
+                {% if user.username != user_.username %}
+                <div class="button-hub-profile">
+                    <button class="follow-btn btn-lg">Follow</button>
+                    <button class="unfollow-btn btn-lg hidden">Unfollow</button>
+                </div>
+                {% else %}
+                    <a href="" class="update-account-btn">Profile <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                        </svg>
+                    </a>
+                {% endif %}
+                    
+            </div>
+            <div style="font-size: 18px; font-family: cursive;margin:20px 0px; font-weight: 800;">Description</div>
+            <div class="user-description">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ducimus temporibus tenetur quos repellat id similique, adipisci, optio vel ipsa perferendis sunt! Eos corrupti earum doloremque harum! Deleniti voluptatibus voluptas similique ducimus in quod eum necessitatibus, minima, impedit odio excepturi, quos sit eos quia pariatur velit error ratione quas explicabo totam magnam vero maxime dolorem. Fugit consequuntur asperiores quidem enim dignissimos, dolorum eius rerum ipsam, quaerat ex iure quisquam odio eos eaque saepe blanditiis tempora laudantium maxime repellat corporis excepturi, accusantium ducimus possimus voluptatem. Error provident quos, nemo esse atque aliquid dolorem eos quo, voluptatem rem saepe adipisci reprehenderit nesciunt ipsum soluta labore explicabo nobis nisi earum voluptatum odio. Iste asperiores, quo, dicta exercitationem fuga eaque, quis voluptatem nesciunt consectetur animi nulla? Tempora quaerat dolorum sit assumenda? Itaque accusantium autem nobis atque impedit velit quidem ex consequatur unde voluptatibus. Assumenda accusamus facilis doloremque aut voluptatem. Eligendi iusto esse voluptatem suscipit nesciunt numquam ad obcaecati debitis neque temporibus quasi eum in recusandae porro, ea officiis nihil sit consectetur rem nostrum tempore magni. Et corporis sint quasi libero facere eum aspernatur dolorum autem alias ea iure possimus molestiae temporibus ipsa mollitia error saepe beatae necessitatibus placeat, ducimus blanditiis harum tempora vitae atque. Asperiores, laboriosam libero sapiente est delectus, repellat totam, commodi dolores mollitia ipsam qui? Accusantium quibusdam dicta quisquam totam cupiditate sapiente dolor non amet, illo minima doloremque? Cupiditate, quo veniam nostrum optio similique commodi nisi. Expedita quam delectus cupiditate? Quae quasi reprehenderit, saepe id odit debitis at quas, deserunt voluptatem recusandae praesentium aspernatur velit tempora eos, doloremque tempore? Nostrum, pariatur. Odit aliquam facilis eligendi velit ea illum excepturi neque, dolore natus impedit nobis iusto debitis sed qui inventore blanditiis ducimus dicta! Vitae hic soluta sint nemo distinctio commodi magni magnam beatae asperiores fugiat rerum ex natus vero, recusandae illum obcaecati sit veniam?
+            </div>
+            {% if user_.article_set.all %}
+                <div class="title"><a href="#" class="a-b">Articles<span class="a-t"></span></a></div>
+                <div class="container f-row">
+                    {% for article in user_.article_set.all %}
+                        <div class="cart">
+                            <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                            <div class="des-cart">
+                                <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                                <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                                <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+                
+                </div>
+            {% endif %}
+        </div>
+            
+    </div>
+</div>
+<br><br><br>
+{% endblock content %}
+    

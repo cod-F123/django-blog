@@ -43,10 +43,12 @@
             <div class="detail-article">
                 <div class="head-article">
                     <div class="author-info">
-                        <a href="#"><img src="{% static 'images/user.png' %}" alt="" class="user-image">
-                        USERNAME</a>
+                        <a href="{% url 'profile_user' article.author.username %}"><img src="{{article.author.profile.image.url}}" alt="" class="user-image">
+                        {{article.author}}</a>
+                        
                         <button class="follow-btn">Follow</button>
                         <button class="unfollow-btn hidden">Unfollow</button>
+                        
                     </div>
                     
                 </div>

@@ -168,7 +168,7 @@ nav div{
     align-items: center;
     transition: all 300ms;
     overflow: hidden;
-    flex-direction: row-reverse;
+    flex-direction: column;
     margin-top: 0;
 }
 
@@ -808,6 +808,58 @@ a{
     color: #dc3545;
 }
 
+.img-profile-user{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid #000;
+}
+
+.profile-hub{
+    display: flex;
+    height: 100px;
+    align-items: center;
+    border-bottom: 2px solid #444;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.user-description{
+    width: 100%;
+    height: max-content;
+    font-size: 15px;
+    color: #444;
+}
+
+.update-account-btn{
+    position: absolute;
+    right: 0px;
+    font-weight: 600;
+    font-family: cursive;
+    transition: all 200ms;
+}
+
+.ffuser{
+    font-size: 22px;
+    font-weight: 600;
+    font-family: cursive;
+    margin-left: 30px;
+}
+
+.username-profile{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.button-hub-profile{
+    display: flex;
+    margin-left :30px
+}
+
+.btn-lg{
+    padding: 7px 9px !important;
+}
+
 @media (max-width:887px){
     .cart{
         width: 350px;
@@ -938,12 +990,32 @@ a{
     .author-min a{
         font-size: 10px !important;
     }
+    .update-account-btn{
+        transform: translateY(50px);
+    }
 }
 
 @media (max-width : 560px){
     .comment-cart{
         width: 230px;
         height: 180px;
+    }
+    .img-profile-user{
+        width: 60px;
+        height: 60px;
+    }
+    .ffuser{
+        font-size: 14px;
+        margin-left: 10px;
+    }
+    .item{
+        font-size: 15px;
+    }
+    .list-item form{
+        width: 200px;
+    }
+    .list-item input{
+        width: 140px;
     }
 }
 

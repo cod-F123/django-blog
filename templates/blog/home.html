@@ -16,8 +16,8 @@
                     <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
                     <div class="des-cart">
                         <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
-                        <p class="mini"> {{article.mini_description}}</p>
-                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                        <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="{% url 'profile_user' article.author.username %}" >{{article.author}}</a> : Author</span></div>
                     </div>
                 </div>
             {% endfor %}
@@ -31,8 +31,8 @@
                     <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
                     <div class="des-cart">
                         <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
-                        <p class="mini"> {{article.mini_description}}</p>
-                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                        <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                        <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="{% url 'profile_user' article.author.username %}" >{{article.author}}</a> : Author</span></div>
                     </div>
                 </div>
             {% endfor %}
