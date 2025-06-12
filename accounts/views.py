@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate , login , logout
-from .froms import RegisterUser
+from .froms import RegisterUser , UpdateAccount , ProfileForm , UpdatePassword
 from django.contrib import messages
 from .models import Profile , Following
 from django.contrib.auth.models import User
@@ -91,4 +91,94 @@ def unfollowing_user(request):
                     return JsonResponse({"message":"successful"})
                 
     return JsonResponse({"message":"error"})
+
+def account_info(request):
+    if request.user.is_authenticated:
+        user_form = UpdateAccount(instance = request.user)
+        
+        if request.method == 'POST':
+            user_form = UpdateAccount(request.POST or None , instance = request.user)
             
+            if user_form.is_valid():
+                user_form.save()
+                
+                messages.success(request,"Account Updated!")
+                
+                return redirect("account_info")
+            
+            else:
+                for err in list(user_form.errors.values()):
+                    messages.error(request,err)
+                
+                return redirect("account_info")
+            
+        return render(request, "accounts/account-info.html",{"user_form":user_form})
+    
+    messages.error(request,"Access Denied")
+    return redirect("login")            
+
+def user_info(request):
+    if request.user.is_authenticated:
+        user_form = ProfileForm(instance = request.user.profile)
+        
+        if request.method == 'POST':
+            user_form = ProfileForm(request.POST or None, request.FILES or None, instance = request.user.profile)
+            
+            if user_form.is_valid():
+                user_form.save()
+                
+                messages.success(request,"User info Updated!")
+                
+                return redirect("user_info")
+            
+            else:
+                for err in list(user_form.errors.values()):
+                    messages.error(request,err)
+                
+                return redirect("user_info")
+            
+        return render(request, "accounts/user-info.html",{"user_form":user_form})
+    
+    messages.error(request,"Access Denied")
+    return redirect("login")         
+
+def change_password(request):
+    if request.user.is_authenticated:
+        form = UpdatePassword(request.user)
+        
+        if request.method == 'POST':
+            form = UpdatePassword(request.user, request.POST or None)
+            
+            if form.is_valid():
+                form.save()
+                
+                login(request,request.user)   
+                
+                messages.success(request,"password changed")
+                
+                return redirect("home")
+            
+            else:
+                for err in list(form.errors.values()):
+                    messages.error(request,err)
+                
+                return redirect("change_password")
+        
+        return render(request,"accounts/change-password.html",{"form":form})
+    
+    messages.error(request,"Access Denied")
+    return redirect("login")
+
+def delete_account(request):
+    if request.user.is_authenticated:
+        user = User.objects.filter(username = request.user.username).first()
+        
+        logout(request)
+        
+        user.delete()
+        
+        messages.success(request,"Yout account deleted")
+        return redirect("home")
+    
+    messages.error(request,"Access Denied")
+    return redirect("login") 

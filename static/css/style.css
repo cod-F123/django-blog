@@ -15,6 +15,13 @@ ul{
     padding: 0;
 }
 
+p{
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto; 
+    word-spacing: -0.05em; 
+}
+
 nav{
     height: 70px;
     background-color: #ddd;
@@ -420,6 +427,7 @@ a{
     background-color: rgba(158, 210, 158,.9);
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 
@@ -444,6 +452,12 @@ a{
     height: 50px;
     object-fit: cover;
     margin-right: 5px;
+    border-radius: 50%;
+    border: 2px solid #777;
+}
+
+.min-90vh{
+    min-height: 90vh;
 }
 
 .follow-btn{
@@ -838,6 +852,7 @@ a{
     font-weight: 600;
     font-family: cursive;
     transition: all 200ms;
+    cursor: pointer;
 }
 
 .ffuser{
@@ -845,6 +860,7 @@ a{
     font-weight: 600;
     font-family: cursive;
     margin-left: 30px;
+    cursor: pointer;
 }
 
 .username-profile{
@@ -971,6 +987,179 @@ a{
     background-color: #777;
 }
 
+.position-relative{
+    position: relative;
+}
+
+.h-ff{
+    position: absolute;
+    width: 0px;
+    height: 100%;
+    background-color: rgba(144,144,144,.6);
+    transition: opacity 200ms ease-in;
+    opacity: 0;
+    z-index: 20;
+}
+
+.h-ff-active{
+    width: 100%;
+    opacity: 1;
+}
+
+.ff-div , .menu-user{
+    width: 0px;
+    height: 100%;
+    position: absolute;
+    z-index: 40;
+    left: 0;
+    background-color: #fff;
+    opacity: 0;
+    transition: width 200ms ease-in , opacity 200ms ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.ff-div-active{
+    width: 26%;
+    opacity: 1;
+}
+
+.close-ff-div{
+    background-image: url("../images/c-menu.png");
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
+.ff-hub{
+    margin-top: 80px;
+    display: flex;
+    width: 100%;
+    justify-content: start;
+    border-bottom: 2px solid #000;
+}
+
+.ff-link{
+    padding: 5px 7px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: cursive;
+}
+
+.follow-hub{
+    width: 100%;
+    height: 86%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+}
+
+.follow-hub > div{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    align-items: center;
+}
+
+.user-follow{
+    width: 90%;
+    height: 60px;
+    margin-top: 20px;
+    border-bottom: 1px solid #777;
+}
+
+.user-follow a{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.user-follow span{
+    font-size: 19px;
+    font-weight: 500;
+    font-family: cursive;
+}
+
+.user-follow img{
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #777;
+}
+
+.ff-link-active{
+    background-color: #999;
+    color: #fff;
+}
+
+.follow-hub-active{
+    display: flex;
+}
+
+.a-user{
+    font-family: cursive;
+    border-bottom: 2px solid #777;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.a-user a{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user-info-pro{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.user-info-pro span{
+    font-family: cursive;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.delete-account-div{
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #000;
+    transition: transform 300ms ease , opacity 200ms;
+    display: none;
+    opacity: 0;
+    bottom: 0;
+    z-index: 300;
+    padding: 10px;
+    font-size: 18px;
+    font-family: cursive;
+    align-items: center;
+}
+
+.delete-account-div-active{
+    display: flex;
+    opacity: 1;
+    bottom: 50%;
+}
+
+.update-article-btn{
+    margin-right: 10px;
+    font-size: 18px;
+    font-family: cursive;
+    font-weight: 600;
+}
 
 @media (max-width:887px){
     .cart{
@@ -1053,6 +1242,9 @@ a{
         flex-direction: row;
         width: max-content;
     }
+    .ff-div-active{
+        width: 40%;
+    }
 }
 
 
@@ -1128,6 +1320,19 @@ a{
     }
     .list-item input{
         width: 140px;
+    }
+    .ff-div-active{
+        width: 50%;
+    }
+}
+
+@media (max-width:400px){
+    .ff-div-active{
+        width: 100%;
+        z-index: 2000;
+    }
+    .close-ff-div{
+        left: 10px;
     }
 }
 
