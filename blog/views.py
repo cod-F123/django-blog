@@ -1,5 +1,6 @@
 from django.shortcuts import render , get_object_or_404 , redirect
-from django.forms import inlineformset_factory
+from django.urls import reverse
+from django.forms import inlineformset_factory 
 from .models import Article , Paragraph
 from .forms import ArticleForm , ParagraphForm
 from django.contrib import messages
@@ -48,3 +49,44 @@ def new_blog(request):
         return render(request,"blog/newBlog.html",{"article_form":article_form,"form_set":form_set})
 
     return redirect("login")
+
+def update_blog(request,slug):
+    if request.user.is_authenticated :
+        article = Article.objects.filter(slug = slug).first()
+        
+        if article and article.author.username == request.user.username:
+            article_form = ArticleForm(instance=article)
+            FormSet = inlineformset_factory(Article,Paragraph,form=ParagraphForm, extra=0)
+            
+            form_set = FormSet(instance=article)
+            
+            if request.method == 'POST':
+                article_form = ArticleForm(request.POST or None ,request.FILES or None, instance= article)
+                form_set = FormSet(request.POST or None , request.FILES or None , instance=article)
+                
+                if article_form.is_valid() and form_set.is_valid():
+                    article_form.save()
+                    
+                    form_set.save()
+                    
+                    messages.success(request,"Blog Updated")
+                    return redirect(reverse("article_detail",args=[article.slug]))
+                
+                else:
+                    for err in list(form_set.errors):
+                        messages.error(request,err)
+                    
+                    for error in list(article_form.errors.values()):
+                        messages.error(request,error)
+                    
+                    return redirect(reverse("update_blog",args=[article.slug]))
+            
+            return render(request,"blog/update-blog.html",{"form_set":form_set,"article_form":article_form})
+        
+        messages.success(request,"not founded")
+        return redirect("home")
+    
+    messages.success(request,"Access Diend")
+    return redirect("home")
+            
+            
