@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 from .models import Article , Paragraph
 from .forms import ArticleForm , ParagraphForm
 from django.contrib import messages
+from accounts.models import Profile
 
 # Create your views here.
 
@@ -88,5 +89,12 @@ def update_blog(request,slug):
     
     messages.success(request,"Access Diend")
     return redirect("home")
+
+
+def blogs_page(request):
+    articles = Article.publish.all().order_by("date_created")
+    newest_article = Article.publish.all().order_by("-date_created")
+    author_p = Profile.objects.all().order_by("-followers")
+    return render(request,"blog/blogs.html",{"articles":articles,"newest":newest_article,"author_p":author_p})
             
             

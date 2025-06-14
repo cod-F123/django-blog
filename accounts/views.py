@@ -73,6 +73,10 @@ def following_user(request):
                 if followed_last is None:
                     new_followed = Following.objects.create(followd = followed_user,follower = request.user)
                     
+                    followed_user.profile.followers = followed_user.follower.all().count()
+                    
+                    followed_user.profile.save()
+                    
                     return JsonResponse({"message":"successful"})
                 
     return JsonResponse({"message":"error"})
@@ -87,6 +91,10 @@ def unfollowing_user(request):
 
                 if followed_last is not None:
                     followed_last.delete()
+                    
+                    followed_user.profile.followers = followed_user.follower.all().count()
+                    
+                    followed_user.profile.save()
                     
                     return JsonResponse({"message":"successful"})
                 

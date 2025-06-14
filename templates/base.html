@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
    
     <title>Django Blog</title>
@@ -17,7 +21,7 @@
             <div class="menu-btn open"></div>
             <ul class="list-item sm-hidden">
                 <li><a href="{% url 'home' %}" class="item">Home</a></li>
-                <li><a href="#" class="item">Blogs</a></li>
+                <li><a href="{% url 'blogs' %}" class="item">Blogs</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}" class="item danger">Logout</a></li>
                     <li><a href="{% url 'profile_user' user.username %}" class="item">Profile</a></li>
@@ -32,7 +36,7 @@
     <div class="nav-sm">
         <ul class="list-item">
                 <li><a href="{% url 'home' %}" class="item">Home</a></li>
-                <li><a href="#" class="item">Blogs</a></li>
+                <li><a href="{% url 'blogs' %}" class="item">Blogs</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile_user' user.username %}" class="item">Profile</a></li>
                     <li><a href="{% url 'logout' %}" class="item danger">Logout</a></li>
@@ -68,7 +72,6 @@
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, commodi inventore in minima, id alias impedit voluptas earum eos magnam minus veritatis doloribus sequi, aspernatur adipisci corrupti dicta exercitationem magni?
     </footer>
 
-    
     <script>
         $(document).on("click",".open",function(e){
             e.preventDefault();

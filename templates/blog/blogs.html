@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="containre">
+        <div class="container">
+            <div class="text">
+                <span class="addtext"></span><span> ...|</span>
+            </div>
+        </div>
+    </div>
+    <div class="container f-column p-20">
+        <div class="title"><a href="#" class="a-b">New Articles <span class="a-t"></span></a></div>
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for article in newest %}
+                <div class="swiper-slide">
+                    <div class="cart mini-cart">
+                        <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                        <div class="des-cart">
+                            <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                            <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                            <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="{% url 'profile_user' article.author.username %}" >{{article.author}}</a> : Author</span></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+        </div>
+        
+        <div class="title"><a href="#" class="a-b">Pupolear Author<span class="a-t"></span></a></div>
+        <div class="swiper user-carts">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for author in author_p %}
+                <div class="swiper-slide">
+                    <div class="cart-user">
+                        <a href="{% url 'profile_user' author.user.username %}" ><img src="{{author.image.url}}" alt="" ></a>
+                        <a href="{% url 'profile_user' author.user.username %}" class="title-a">{{author.user.username}}</a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+        </div>
+        <div class="title"><a href="#" class="a-b">All blogs <span class="a-t"></span></a></div>
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for article in articles %}
+                <div class="swiper-slide">
+                    <div class="cart mini-cart">
+                        <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                        <div class="des-cart">
+                            <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                            <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                            <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="{% url 'profile_user' article.author.username %}" >{{article.author}}</a> : Author</span></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+        </div>
+        
+        
+    </div>
+
+    <script type="module">
+        import Swiper from 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs'
+
+        const swiper = new Swiper('.swiper', {
+      slidesPerView: 1,
+      spaceBetween: 10,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        579 :{
+            slidesPerView: 2,
+            spaceBetween: 20,
+        },
+        640: {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        },
+      },
+    });
+    const userSwiper = new Swiper('.user-carts', {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      breakpoints: {
+        579 :{
+            slidesPerView: 3,
+            spaceBetween: 20,
+        },
+        640: {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        768: {
+          slidesPerView: 4,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 6,
+          spaceBetween: 50,
+        },
+      },
+    });
+    </script>
+
+    <script>
+        let textA = document.getElementsByClassName("addtext")[0];
+        let text = "Write your Article";
+        let delay = 0;
+        for (let i of text){
+            setTimeout(()=>{
+                textA.innerHTML += i;
+            },delay+=130)
+        }
+
+    </script>
+{% endblock content %}
+    

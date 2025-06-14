@@ -6,4 +6,5 @@ urlpatterns = [
     path("blog/<str:slug>/",views.article_detail,name="article_detail"),
     path("new/",views.new_blog,name="new_blog"),
     path("update/blog/<str:slug>/",views.update_blog , name="update_blog"),
+    path("blogs/",views.blogs_page, name="blogs"),
 ]

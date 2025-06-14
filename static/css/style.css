@@ -1161,6 +1161,38 @@ a{
     font-weight: 600;
 }
 
+.form-lim{
+    width: 50%;
+}
+
+.swiper {
+  width: 100%;
+  height: 300px;
+}
+
+.cart-user{
+    width: 160px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 20px;
+    background-color: #fff;
+    align-items: center;
+    padding: 0px 5px;
+}
+
+.user-carts{
+    height: 150px !important;
+}
+
+.cart-user img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border:  2px solid #777;
+}
+
+
 @media (max-width:887px){
     .cart{
         width: 350px;
@@ -1245,6 +1277,16 @@ a{
     .ff-div-active{
         width: 40%;
     }
+    .mini-cart{
+        width: 300px !important;
+    }
+}
+
+@media (max-width : 680px){
+    .mini-cart{
+        width: 270px !important;
+        height: 160px !important;
+    }
 }
 
 
@@ -1297,6 +1339,10 @@ a{
     .update-account-btn{
         transform: translateY(50px);
     }
+    .form-lim{
+
+        width: 60%;
+    }
 }
 
 @media (max-width : 560px){
@@ -1323,6 +1369,14 @@ a{
     }
     .ff-div-active{
         width: 50%;
+    }
+
+    .form-lim{
+        width: 327px;
+    }
+    .mini-cart{
+        width: 340px !important;
+        height: 190px !important;
     }
 }
 
