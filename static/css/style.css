@@ -393,6 +393,8 @@ a{
     font-size: 20px;
     font-weight: 700;
     text-align: left;
+    position: relative;
+    width: 100%;;
 }
 
 .comment-cart{
@@ -1192,6 +1194,48 @@ a{
     border:  2px solid #777;
 }
 
+.new-comment-btn{
+    color: #218838;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.update-comment-btn{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+
+.comment-form{
+    position: fixed;
+    top: 0;
+    height:100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: -1;
+    opacity: 0;
+    transition: all 200ms;
+    align-items: center;
+    background-color: rgba(144,144,144,.6);
+    flex-direction: column;
+    
+}
+
+.comment-form-active{
+    z-index: 33;
+    opacity: 1;
+}
+
+.delete-comment-btn{
+    position: absolute;
+    top: 6px;
+    right: 45px;
+    color: red;
+}
 
 @media (max-width:887px){
     .cart{

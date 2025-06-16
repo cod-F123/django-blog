@@ -1,10 +1,11 @@
 from django.shortcuts import render , get_object_or_404 , redirect
 from django.urls import reverse
 from django.forms import inlineformset_factory 
-from .models import Article , Paragraph
-from .forms import ArticleForm , ParagraphForm
+from .models import Article , Paragraph , Comment
+from .forms import ArticleForm , ParagraphForm , CommentForm
 from django.contrib import messages
 from accounts.models import Profile
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -14,7 +15,18 @@ def home(request):
 
 def article_detail(request,slug):
     article = get_object_or_404(Article,slug=slug)
-    
+    if request.user.is_authenticated and request.method == 'POST':
+        form = CommentForm(request.POST)
+        
+        if form.is_valid():
+            form.instance.user = request.user 
+            form.instance.article = article
+            form.save()
+            
+            return redirect(reverse("article_detail",args=[article.slug]))
+        
+        messages.error(request,"something is wrong")
+        return redirect(reverse("article_detail",args=[article.slug]))
     return render(request,"blog/article.html",{"article":article})
 
 def new_blog(request):
@@ -96,5 +108,55 @@ def blogs_page(request):
     newest_article = Article.publish.all().order_by("-date_created")
     author_p = Profile.objects.all().order_by("-followers")
     return render(request,"blog/blogs.html",{"articles":articles,"newest":newest_article,"author_p":author_p})
+
+def update_comment(request,pk):
+    if request.user.is_authenticated:
+        comment = Comment.objects.filter(id = pk).first()
+        
+        if comment and request.user.username == comment.user.username:
             
+            form = CommentForm(instance=comment)
             
+            if request.method == 'POST':
+                form = CommentForm(request.POST or None , instance= comment)
+                
+                if form.is_valid():
+                    form.instance.updated = True
+                    form.save()
+                    
+                    messages.success(request,"comment updated")
+                    return redirect(reverse("article_detail",args=[comment.article.slug]))
+                
+                else:
+                    for err in list(form.errors.values()):
+                        messages.error(request,err)
+                        
+                    return redirect(reverse("update_comment",args=[pk]))
+                
+            return render(request,"blog/update_comment.html",{"form":form})
+        
+        else:
+            messages.error(request,"Not Founded!")
+            
+            return redirect("home")
+      
+    messages.info(request,"Access Diend")  
+    return redirect("login")
+     
+     
+
+def delete_comment(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            if request.POST.get("action") == 'post':
+                comment_id = request.POST.get("cid")
+                
+                comment = Comment.objects.filter(id = comment_id).first()
+                
+                if comment and comment.user.username == request.user.username:
+                    comment.delete()
+                    
+                    return JsonResponse({"message":"ok"})
+    
+    return JsonResponse({"message":"not"})
+                    

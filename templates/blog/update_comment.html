@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container j-center ">
+    <div class="container-80 j-center">
+        <div class="container f-column align-center min-90vh">
+            <div class="container j-center my-60">
+                <p style="font-size: 18px; font-family:cursive; font-weight: 600;">Update your comment</p>
+            </div>
+            <form class="form-lim" style="display: flex;flex-direction:column; position: relative; align-items: center;" action="." method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="blog-form">
+                    
+                    {{form}}
+                    <button type="submit" style="margin-bottom: 10px;" class="btn-success">Submit</button>
+                </div>
+               
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+    

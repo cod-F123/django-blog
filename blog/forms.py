@@ -1,5 +1,5 @@
 from django import forms
-from .models import Article, Paragraph
+from .models import Article, Paragraph , Comment
 
 class ArticleForm(forms.ModelForm):
     title = forms.CharField(
@@ -61,3 +61,15 @@ class ParagraphForm(forms.ModelForm):
     class Meta:
         model = Paragraph
         fields = ["title","content","image"]
+        
+
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label="",
+        widget= forms.Textarea(attrs={"class":"textarea-control","placeholder":"content of comment"}),
+        required=True
+    )
+    
+    class Meta:
+        model = Comment
+        fields = ["content",]
