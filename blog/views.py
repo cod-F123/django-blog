@@ -6,6 +6,8 @@ from .forms import ArticleForm , ParagraphForm , CommentForm
 from django.contrib import messages
 from accounts.models import Profile
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.db.models import Q 
 
 # Create your views here.
 
@@ -159,4 +161,28 @@ def delete_comment(request):
                     return JsonResponse({"message":"ok"})
     
     return JsonResponse({"message":"not"})
-                    
+
+def search_page(request):
+    searched = request.GET.get("q",None)
+    
+    if searched:
+        paragraphs = Paragraph.objects.filter(
+            Q(
+                Q(article__author__username__icontains = searched) |
+                Q(article__title__icontains = searched) |
+                Q(article__mini_description__icontains = searched) |
+                Q(article__introduction__icontains = searched) |
+                Q(title__icontains = searched) |
+                Q(content__icontains = searched)
+            ) & 
+            Q(Q(article__status = "published") & Q(status = "published"))
+        )
+        
+        users = User.objects.filter(
+            Q(username__icontains = searched)
+        )
+        
+        return render(request,"blog/search.html",{"articles":paragraphs,"users":users})
+    
+    messages.info(request,"not query searched")
+    return redirect("home")

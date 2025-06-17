@@ -28,7 +28,7 @@
                 {% else %}
                     <li><a href="{% url 'login' %}" class="item success">Login</a></li>
                 {% endif %}
-                <li><form action=""><input type="text"><button>search</button></form></li>
+                <li><form action="{% url 'search' %}"><input type="text" name="q"><button>search</button></form></li>
             </ul>
         </div>
         <div class="logo">DjBlog</div>
