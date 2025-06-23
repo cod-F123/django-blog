@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container min-90vh">
+{% if users %}
+    <div class="title"><a href="#" class="a-b">Pupolear Author<span class="a-t"></span></a></div>
+        <div class="swiper user-carts">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for user in users %}
+                <div class="swiper-slide">
+                    <div class="cart-user">
+                        <a href="{% url 'profile_user' user.username %}" ><img src="{{ user.profile.image.url}}" alt="" ></a>
+                        <a href="{% url 'profile_user' user.username %}" class="title-a">{{ user.username}}</a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+        </div>
+    {% endif %}
+    {% if articles %}
+    <div class="container f-column p-20">
+        <div class="title"><a href="#" class="a-b">Articles result <span class="a-t"></span></a></div>
+        <div class="container f-row">
+            {% for article in articles %}
+                <div class="cart">
+                    <a href="{{.article.article.get_absolute_url}}" class="link"><img src="{{article.article.image.url}}" alt="{{article.article.title}}" ></a>
+                    <div class="des-cart">
+                        <a href="{{article.article.get_absolute_url}}" class="title-a">{{article.article.title}}</a>
+                        <p class="mini"> {{article.article.mini_description|truncatewords:20}}</p>
+                        <div class="author-min"><span>{{article.article.date_created|timesince}} ago</span><span><a href="{% url 'profile_user' article.article.author.username %}" >{{article.article.author}}</a> : Author</span></div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            
+        </div>
+        
+    </div>
+    {% endif %}
+</div>
+    <script>
+        let textA = document.getElementsByClassName("addtext")[0];
+        let text = "Write your Article";
+        let delay = 0;
+        for (let i of text){
+            setTimeout(()=>{
+                textA.innerHTML += i;
+            },delay+=130)
+        }
+
+    </script>
+{% endblock content %}
+    

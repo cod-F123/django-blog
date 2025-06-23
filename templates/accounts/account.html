@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load my_tags %}
+
+{% block content %}
+<div class="container j-center position-relative">
+    <div class="container-80 j-center">
+        <div class="countainer min-90vh">
+            <div class="profile-hub">
+                <div>
+                    <img src="{{user_.profile.image.url}}" alt="" class="img-profile-user">
+                    <span class="username-profile">{{user_.username}}</span>
+                </div>
+                <div class="ffuser">Followed <span>{{user_.followed.all.count}}</span></div>
+                <div class="ffuser">Follower <span class="follower-span">{{user_.follower.all.count}}</span></div>
+                {% if user.is_authenticated %}
+                    {% if user.username != user_.username %}
+                    <div class="button-hub-profile">
+                        {% if user_.username|is_followed:user.username %}
+                        
+                            <button class="unfollow-btn btn-lg" data-index="{{user_.username}}">Unfollow</button>
+                            <button class="follow-btn btn-lg hidden" data-index="{{user_.username}}">Follow</button>
+                        {% else %}
+                            <button class="follow-btn btn-lg" data-index="{{user_.username}}">Follow</button>
+                            <button class="unfollow-btn btn-lg hidden" data-index="{{user_.username}}">Unfollow</button>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                        <a class="update-account-btn">Profile <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                            </svg>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                    
+            </div>
+            <div style="font-size: 18px; font-family: cursive;margin:20px 0px; font-weight: 800;">Info</div>
+            <div class="user-info-pro">
+                <span>First name : {{user_.first_name}}</span> <span>Last name : {{user_.last_name}}</span> <span>University : {{user_.profile.university}}</span>
+            </div>
+            <div style="font-size: 18px; font-family: cursive;margin:20px 0px; font-weight: 800;">Description</div>
+            <p class="user-description">
+               {{user_.profile.description}}
+            </p>
+            {% if user_.article_set.all %}
+                <div class="title"><a href="#" class="a-b">Articles<span class="a-t"></span></a></div>
+                <div class="container f-row">
+                    {% for article in user_.article_set.all %}
+                        <div class="cart">
+                            <a href="{{article.get_absolute_url}}" class="link"><img src="{{article.image.url}}" alt="{{article.title}}" ></a>
+                            <div class="des-cart">
+                                <a href="{{article.get_absolute_url}}" class="title-a">{{article.title}}</a>
+                                <p class="mini"> {{article.mini_description|truncatewords:20}}</p>
+                                <div class="author-min"><span>{{article.date_created|timesince}} ago</span><span><a href="#" >{{article.author}}</a> : Author</span></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+                
+                </div>
+            {% endif %}
+        </div>
+            
+    </div>
+    <div class="h-ff"></div>
+    <div class="ff-div">
+        <div class="close-ff-div"></div>
+        <div class="ff-hub">
+            <div class="ff-link ff-link-active follower-link">Followers</div>
+            <div class="ff-link followed-link">Followed</div>
+        </div>
+        <div class="follow-hub follower follow-hub-active">
+            <div>
+                {% for user_follower in user_.follower.all %}
+                    <div class="user-follow">
+                        <a href="{% url 'profile_user' user_follower.follower.username %}"><img src="{{user_follower.follower.profile.image.url}}" alt=""><span>{{user_follower.follower.username}}</span></a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="follow-hub followed">
+            {% for user_followed in user_.followed.all %}
+                <div>
+                    <div class="user-follow">
+                        <a href="{% url 'profile_user' user_followed.followd.username %}"><img src="{{user_followed.followd.profile.image.url}}" alt=""><span>{{user_followed.followd.username}}</span></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% if user.username == user_.username %}
+        <div class="menu-user">
+            <div class="close-ff-div close-user-menu"></div>
+            <br><br><br><br>
+            <div class="a-user"><a href="{% url 'account_info' %}">Account Info</a></div>
+            <div class="a-user"><a href="{% url 'user_info' %}">User Info</a></div>
+            <div class="a-user"><a href="{% url 'change_password' %}">Change Password</a></div>
+            <div class="a-user "><a href="#" id="delete-a" class="danger">Delete Account</a></div>
+            <div class="a-user "><a href="{% url 'logout' %}" class="danger">Logout</a></div>
+        </div>
+        <div class="delete-account-div">
+            <div>I wante delete <a href="{% url 'delete_account' %}" class="danger">Account</a> or <a id="no-delete" style="cursor:pointer;" class="success">No</a></div>
+        </div>
+    {% endif %}
+    <br><br><br>
+</div>
+{% if user.username == user_.username %}
+    <script>
+        $(document).on("click","#delete-a",function(e){
+            $(".menu-user").removeClass("ff-div-active");
+            $(".delete-account-div").addClass("delete-account-div-active");
+        });
+
+        $(document).on("click","#no-delete",function(e){
+            $(".delete-account-div").removeClass("delete-account-div-active");
+            $(".h-ff").removeClass("h-ff-active");
+        });
+
+        $(document).on("click",".update-account-btn",function(e){
+            e.preventDefault();
+            $(".h-ff").addClass("h-ff-active");
+            $(".menu-user").addClass("ff-div-active");
+        });
+        
+        $(document).on("click",".close-user-menu",function(e){
+            $(".menu-user").removeClass("ff-div-active");
+            $(".h-ff").removeClass("h-ff-active");
+        });
+    </script>
+{% endif %}
+<script>
+    $(document).on("click",".ffuser",function(e){
+        $(".h-ff").addClass("h-ff-active");
+
+        $(".ff-div").addClass("ff-div-active");
+    });
+
+    $(document).on("click",".close-ff-div",function(e){
+        $(".h-ff").removeClass("h-ff-active");
+        $(".ff-div").removeClass("ff-div-active");
+    });
+
+    $(document).on("click",".follower-link",function(e){
+        $(".followed-link").removeClass("ff-link-active");
+        $(this).addClass("ff-link-active");
+
+        $(".followed").removeClass("follow-hub-active");
+        $(".follower").addClass("follow-hub-active");
+    });
+
+    $(document).on("click",".followed-link",function(e){
+        $(".follower-link").removeClass("ff-link-active");
+        $(this).addClass("ff-link-active");
+
+        $(".follower").removeClass("follow-hub-active");
+        $(".followed").addClass("follow-hub-active");
+    });
+
+    $(document).on("click",".follow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'following_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".unfollow-btn").removeClass("hidden");
+                document.getElementsByClassName("follower-span")[0].innerHTML = Number(document.getElementsByClassName("follower-span")[0].innerHTML) + 1;
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    });
+    $(document).on("click",".unfollow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'unfollowing_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".follow-btn").removeClass("hidden");
+                document.getElementsByClassName("follower-span")[0].innerHTML = Number(document.getElementsByClassName("follower-span")[0].innerHTML) - 1;
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    });
+</script>
+{% endblock content %}
+    

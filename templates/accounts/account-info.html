@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container j-center">
+        <div class="container-80 ">
+            <div class="container f-column align-center min-90vh">
+                <div class="container j-center my-60">
+                    <p style="font-size: 18px; font-family:cursive; font-weight: 600;">Update your account</p>
+                </div>
+                <form action="." method="POST" class="form-lim" style=" display: flex;flex-direction:column; position: relative; align-items: center;">
+                    {% csrf_token %}
+                    <div class="paragraph-form blog-form">
+                        {{user_form}}
+                    </div>
+                    <button type="submit" class="btn-success">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+    

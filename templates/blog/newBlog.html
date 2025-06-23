@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container j-center">
+    <div class="container-80 j-center">
+        <div class="container f-column align-center">
+            <div class="container j-center my-60">
+                <p style="font-size: 18px; font-family:cursive; font-weight: 600;">Create your blog now</p>
+            </div>
+            <form style="width: 100%; display: flex;flex-direction:column; position: relative; align-items: center;" action="." method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="blog-form">
+                    
+                    {{article_form}}
+                </div>
+                <div id="para-forms" style="width: 100%; display: flex;flex-direction:column; align-items: center; margin-top: 20px;">
+                    {{form_set.management_form}}
+                    {% for form in form_set %}
+                        <div class="paragraph-form blog-form">
+                            <div class="par-nam">Paragraph</div>
+                            <button class="btn-delete remove-para"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </button>
+                            {{form}}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="btn-hub-form">
+                    <button type="submit" class="btn-success">Submit</button><button type="button" class="btn-gray" id="add-form">Add Paragraph</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("add-form").addEventListener("click",function(e){
+        const totalForm = document.getElementById("id_paragraph_set-TOTAL_FORMS");
+        const formContainer = document.getElementById("para-forms");
+
+        if (totalForm.value > 0){
+            const formNum = parseInt(totalForm.value);
+
+            const newForm = formContainer.querySelector(".paragraph-form").cloneNode(true);
+            newForm.innerHTML = newForm.innerHTML.replace(/paragraph_set-\d+-/g, `paragraph_set-${formNum}-`);
+
+            formContainer.appendChild(newForm);
+
+            totalForm.value = formNum + 1;
+        }else{
+            $("#para-forms").append(`
+            <div class="paragraph-form blog-form">
+                <div class="par-nam">Paragraph</div>
+                            <button class="btn-delete remove-para"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </button>
+                <div>
+                    <input type="text" name="paragraph_set-0-title" class="input-control" placeholder="Title(Optional)" maxlength="255" id="id_paragraph_set-0-title">
+    
+                </div>
+
+                <div>
+                    <textarea name="paragraph_set-0-content" cols="40" rows="10" class="textarea-control" placeholder="Content" id="id_paragraph_set-0-content">
+                </textarea>
+                    
+                </div>
+
+                <div>
+                    <label for="id_paragraph_set-0-image">Image:</label>
+
+
+
+                <input type="file" name="paragraph_set-0-image" class="input-control" placeholder="image" accept="image/*" id="id_paragraph_set-0-image">
+                    
+                    <input type="hidden" name="paragraph_set-0-article" id="id_paragraph_set-0-article"><input type="hidden" name="paragraph_set-0-id" id="id_paragraph_set-0-id">
+                    
+                </div>
+            </div>
+            `);
+            
+            const formNum = parseInt(totalForm.value);
+            totalForm.value = formNum + 1;
+        }
+    });
+
+    $(document).on("click",".remove-para",function(e){
+        $(this).closest(".paragraph-form").remove();
+
+        const totalForm = $("#id_paragraph_set-TOTAL_FORMS");
+        totalForm.val(totalForm.val() - 1);
+    })
+</script>
+{% endblock content %}
+    

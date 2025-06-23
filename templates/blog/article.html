@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+
+{% block content %}
+    <div class="container m-20 row j-center" style="padding-top: 20px;">
+        <div id="info" class="info">
+            <div class="prag-hub hidden-para">
+                <div class="btn-hid-para" >Paragraphs :</div>
+                <ul class="prag-list">
+                    {% for p in article.paragraph_set.all %}
+                        {% if p.title %}
+                            <li><a href="#para-{{article.slug}}{{p.id}}"># {{p.title}}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="comment-title">Comments : 
+                {% if user.is_authenticated %}
+                <div  class="new-comment-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                    </svg>
+                </div>
+                {% endif %}
+            </div>
+            <div class="comment-list">
+                
+                <div class="co-hub">
+                    {% for comment in article.comment_set.all %}
+                    
+                    <div class="comment-cart">
+                        <div class="comment-info">
+                            <a href="#"><img src="{% static 'images/user.png' %}" alt="" class="user-image">
+                            {{comment.user.username}}</a>
+                        </div>
+                        {% if user.username == comment.user.username %}
+                            <a href="{% url 'update_comment' comment.id %}" class="update-comment-btn" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                            </a>
+                            <a href="#" class="delete-comment-btn" data-index="{{comment.id}}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                </svg>
+                            </a>
+                        {% endif %}
+                        <div class="comment-body">
+                            {{comment.content}}
+                        </div>
+                        <div class="date-comment">
+                            {% if comment.updated %}
+                                <span>updated</span><span>{{comment.date_updated}}</span>
+                            {% else %}  
+                                <span>{{comment.date_created}}</span>
+                            {% endif %}
+                        </div>
+                    </div> 
+                    {% endfor %}                                      
+                                  
+
+                </div>
+            </div>
+        </div>
+        
+            <div class="detail-article">
+                <div class="head-article">
+                    <div class="author-info">
+                        <a href="{% url 'profile_user' article.author.username %}"><img src="{{article.author.profile.image.url}}" alt="" class="user-image">
+                        {{article.author}}</a>
+                        
+                        {% if article.author.username|is_followed:user.username %}
+                            {% if user.username != article.author.username %}
+                                <button class="unfollow-btn btn-lg" data-index="{{article.author.username}}">Unfollow</button>
+                                <button class="follow-btn btn-lg hidden" data-index="{{article.author.username}}">Follow</button>
+                            {% endif %}
+                        {% else %}
+                            {% if user.username != article.author.username %}
+                                <button class="follow-btn btn-lg" data-index="{{article.author.username}}">Follow</button>
+                                <button class="unfollow-btn btn-lg hidden" data-index="{{article.author.username}}">Unfollow</button>
+                            {% endif %}
+                        {% endif %}
+
+                        
+                    </div>
+                    {% if user.username == article.author.username %}
+                            <a href="{% url 'update_blog' article.slug %}" class="update-article-btn">Blog <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                            </svg></a>
+                    {% endif %}
+                </div>
+                <img src="{{article.image.url}}" alt="" class="img-detail">
+                <p class="article-title">{{article.title}}</p>
+                {% if article.introduction %}
+                    <p class="mini-des-art">{{article.introduction}}</p>
+                {% endif %}
+                <div class="container-80">
+                    {% for paragraph in article.paragraph_set.all %}
+                    <div class="paragraph">
+                        {% if paragraph.image %}
+                            <img src="{{paragraph.image.url}}" alt="">
+                        {% endif %}
+                        {% if paragraph.title %}
+                            <div class="para-t" id="para-{{article.slug}}{{paragraph.id}}"><div> </div> {{paragraph.title}}</div>
+                        {% endif %}
+                        <p class="para-body">{{paragraph.content}}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        
+        <div class="com"><a href="#info">comments</a></div>
+        <button class="btn-para">Paragraphs</button> 
+        
+    </div>
+    
+<div class="comment-form">
+        <div class="close-ff-div"></div>
+            <div class="container j-center my-60">
+                <p style="font-size: 18px; font-family:cursive; font-weight: 600; color:#fff; text-shadow: 0px 0px 3px #000;">Write your comment</p>
+            </div>
+            <form action="." method="POST" class="form-lim" style=" display: flex;flex-direction:column; position: relative; align-items: center;">
+                        {% csrf_token %}
+                        <div class="paragraph-form blog-form">
+                            <div>
+                                <textarea name="content" id="id_content" placeholder="content of comment" class="textarea-control"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-success">Submit</button>
+            </form>
+</div>
+
+<script>
+    $(document).on("click",".delete-comment-btn",function(e){
+        const ci_d = $(this).data("index");
+        const thisB = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'delete_comment' %}",
+            data : {
+                cid : ci_d,
+                csrfmiddlewaretoken : "{{ csrf_token }}",
+                action : "post",
+            },
+            success : function(res){
+                if (res.message == 'ok'){
+                    thisB.closest(".comment-cart").remove();
+                };
+            },
+            error : function(xhr , errmg , err){
+                console.log(err);
+            }
+        })
+    })
+</script>
+
+<script>
+    $(document).on("click",".new-comment-btn",function(e){
+        $(".comment-form").addClass("comment-form-active");
+        console.log("clicked");
+    });
+    $(document).on("click",".close-ff-div",function(e){
+        $(".comment-form").removeClass("comment-form-active");
+    });
+    $(document).on("click",".btn-para",function(e){
+        $(".prag-hub").removeClass("hidden-para");
+    });
+    $(document).on("click",".btn-hid-para",function(e){
+        $(".prag-hub").addClass("hidden-para");
+    });
+</script>
+<script>
+    $(document).on("click",".follow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'following_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".unfollow-btn").removeClass("hidden");
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    });
+    $(document).on("click",".unfollow-btn",function(e){
+        e.preventDefault();
+        const username = $(this).data("index");
+        const thisBtn = $(this);
+
+        $.ajax({
+            type : "POST",
+            url : "{% url 'unfollowing_user' %}",
+            data : {
+                uname : username,
+                csrfmiddlewaretoken : "{{csrf_token}}",
+                action : "post"
+            },
+            success : function(res){
+                thisBtn.addClass("hidden");
+                $(".follow-btn").removeClass("hidden");
+            },
+            error : function(xhr , errmg ,err){
+                console.log(err);
+            }
+        })
+    })
+</script>
+
+{% endblock content %}
+    
